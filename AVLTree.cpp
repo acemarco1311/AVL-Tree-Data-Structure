@@ -67,33 +67,61 @@ void AVLTree::single_left_rotate(AVLNode* node){
     ////update tree root in every rotation in case the current root of the tree being rotated to be a child
     //this->update_tree_root(node);
 
-    //update version
-    //implement a single left rotation to solve a single right-heavy LinkedList violation 
-    AVLNode* right_child = node->get_right_child(); 
-    AVLNode* grand_left = right_child->get_left_child();
-    AVLNode* violation_parent = node->get_parent(); 
-    //check null
-    if (violation_parent == nullptr)  right_child->set_parent(violation_parent);
-    //swap violation to its right child
-    else if (node->get_key() == violation_parent->get_left_child()->get_key()){
-        violation_parent->set_left_child(right_child);
-        right_child->set_parent(violation_parent);
-    }
-    else { 
-        violation_parent->set_right_child(right_child); 
-        right_child->set_parent(violation_parent);
-    }
-    //set violation down to be the left child of its current right child
-    right_child->set_left_child(node); 
-    node->set_parent(right_child);
-    //set grand_left to be right child of violation
-    if (grand_left != nullptr) grand_left->set_parent(node);
+    ////update version
+    ////implement a single left rotation to solve a single right-heavy LinkedList violation 
+    //AVLNode* right_child = node->get_right_child(); 
+    //AVLNode* grand_left = right_child->get_left_child();
+    //AVLNode* violation_parent = node->get_parent(); 
+    ////check null
+    //if (violation_parent == nullptr){
+    //    right_child->set_parent(violation_parent);
+    //    this->set_root(right_child);
+    //}  
+    ////swap violation to its right child
+    //else if (node->get_key() == violation_parent->get_left_child()->get_key()){
+    //    violation_parent->set_left_child(right_child);
+    //    right_child->set_parent(violation_parent);
+    //}
+    //else { 
+    //    violation_parent->set_right_child(right_child); 
+    //    right_child->set_parent(violation_parent);
+    //}
+    ////set violation down to be the left child of its current right child
+    //right_child->set_left_child(node); 
+    //node->set_parent(right_child);
+    ////set grand_left to be right child of violation
+    //if (grand_left != nullptr) grand_left->set_parent(node);
+    //node->set_right_child(grand_left);
+    ////update the height of 2 affected node: violation and right_child
+    //node->update_height(); 
+    //right_child->update_height(); 
+    ////update tree root in case we rotated the current tree root
+    ////this->update_tree_root(node); 
+    
+    // just the cleaner code version
+    AVLNode* right_child = node->get_right_child();
+    AVLNode* grand_left = right_child->get_left_child(); 
+    AVLNode* violation_parent = node->get_parent();
+    // handle grand_left and violation relationship
     node->set_right_child(grand_left);
-    //update the height of 2 affected node: violation and right_child
+    if (grand_left != nullptr) {
+        grand_left->set_parent(node);
+    }
+    // handle y and violation_parent relationship
+    right_child->set_parent(node->get_parent()); 
+    if (violation_parent == nullptr){
+        this->set_root(right_child);
+    }
+    else if (violation_parent->get_left_child()->get_key() == node->get_key()){
+        violation_parent->set_left_child(right_child );
+    }
+    else violation_parent->set_right_child(right_child);
+    // handle x and y relationship 
+    right_child->set_left_child(node);
+    node->set_parent(right_child);
+    // update height of 2 height-affected nodes
     node->update_height(); 
     right_child->update_height(); 
-    //update tree root in case we rotated the current tree root
-    this->update_tree_root(node); 
 }
 
 void AVLTree::single_right_rotate(AVLNode* node){
@@ -112,35 +140,60 @@ void AVLTree::single_right_rotate(AVLNode* node){
     //this->update_tree_root(node);
 
     //update version 
-    AVLNode* left_child = node->get_left_child();
+    //AVLNode* left_child = node->get_left_child();
+    //AVLNode* grand_right = left_child->get_right_child();
+    //AVLNode* violation_parent = node->get_parent();
+    ////check null 
+    //if (violation_parent == nullptr){
+    //    left_child->set_parent(violation_parent);
+    //    this->set_root(left_child);
+    //}
+    ////swap left_child and violation
+    //else if (node->get_key() == violation_parent->get_left_child()->get_key()){
+    //    violation_parent->set_left_child(left_child);
+    //    left_child->set_parent(violation_parent);  
+    //}
+    //else { 
+    //    violation_parent->set_right_child(left_child);
+    //    left_child->set_parent(violation_parent);
+    //}
+    ////set violation down to be the right child of its current left child
+    //left_child->set_right_child(node);
+    //node->set_parent(left_child);
+    ////set grand_right to be the left child of violation
+    //node->set_left_child(grand_right);
+    //if (grand_right != nullptr){
+    //    grand_right->set_parent(node);
+    //} 
+    ////update height of 2 height affected nodes: violation and its current left child
+    //node->update_height();
+    //left_child->update_height(); 
+    ////update tree root
+    ////this->update_tree_root(node);
+
+    AVLNode* left_child = node->get_left_child(); 
     AVLNode* grand_right = left_child->get_right_child();
-    AVLNode* violation_parent = node->get_parent();
-    //check null 
-    if (violation_parent == nullptr){
-        left_child->set_parent(violation_parent);
+    AVLNode* violation_parent = node->get_parent(); 
+    // handle violation and grand_right relationship
+    node->set_left_child(grand_right);
+    if (grand_right != nullptr) { 
+        grand_right->set_parent(node); 
     }
-    //swap left_child and violation
+    //handle left_child and violation_parent
+    left_child->set_parent(violation_parent);
+    if (violation_parent == nullptr) {
+        this->set_root(left_child); 
+    }
     else if (node->get_key() == violation_parent->get_left_child()->get_key()){
         violation_parent->set_left_child(left_child);
-        left_child->set_parent(violation_parent);  
     }
-    else { 
-        violation_parent->set_right_child(left_child);
-        left_child->set_parent(violation_parent);
-    }
-    //set violation down to be the right child of its current left child
+    else violation_parent->set_right_child(left_child);
+    //handle violation and left_child relationship
     left_child->set_right_child(node);
-    node->set_parent(left_child);
-    //set grand_right to be the left child of violation
-    node->set_left_child(grand_right);
-    if (grand_right != nullptr){
-        grand_right->set_parent(node);
-    } 
-    //update height of 2 height affected nodes: violation and its current left child
+    node->set_parent(left_child); 
+    // update height of 2 height affected nodes
     node->update_height();
     left_child->update_height(); 
-    //update tree root
-    this->update_tree_root(node);
 }
 
 void AVLTree::double_left_rotate(AVLNode* node){
@@ -272,27 +325,38 @@ void AVLTree::remove(AVLNode* deleted_node){
     if(actual_deleted_node_child != nullptr){
         actual_deleted_node_child->set_parent(actual_deleted_node->get_parent());
     }
-    if(actual_deleted_node->get_key() == this->get_root()->get_key()){
+    if(actual_deleted_node->get_parent() == nullptr){
         this->set_root(actual_deleted_node_child);
     }
     else if(actual_deleted_node->get_key() == actual_deleted_node->get_parent()->get_left_child()->get_key()){
         actual_deleted_node->get_parent()->set_left_child(actual_deleted_node_child);
     }
     else actual_deleted_node->get_parent()->set_right_child(actual_deleted_node_child);
-    if(actual_deleted_node != deleted_node){
+    if(actual_deleted_node->get_key() != deleted_node->get_key()){
         deleted_node->set_key(actual_deleted_node->get_key());
-        deleted_node->set_left_child(actual_deleted_node->get_left_child());
-        deleted_node->set_right_child(actual_deleted_node->get_right_child());
+        if (actual_deleted_node->get_left_child() != nullptr) {
+            deleted_node->set_left_child(actual_deleted_node->get_left_child());
+        }
+        if (actual_deleted_node->get_right_child() != nullptr) {
+            deleted_node->set_right_child(actual_deleted_node->get_right_child()); 
+        }
     }
+    
     //fix height 
+    //actual_deleted_node->set_parent(nullptr);
+    //actual_deleted_node->set_left_child(nullptr); 
+    //actual_deleted_node->set_right_child(nullptr);
     AVLNode* fix_height = actual_deleted_node;
+    actual_deleted_node = nullptr;
+    fix_height->update_height();
+    fix_height->print_node();
     while(fix_height->get_parent() != nullptr){
         this->rebalance(fix_height);
         fix_height = fix_height->get_parent();
     }
     this->rebalance(fix_height);
-    this->update_tree_root(this->get_root());
     actual_deleted_node = nullptr;
+    //this->update_tree_root(this->get_root());
 }
 
 AVLNode* AVLTree::search(AVLNode* target){
@@ -375,8 +439,7 @@ int main(){
     tree->insert(twenty);
     tree->insert(twenty_five);
     tree->insert(twenty_one); 
-    tree->remove(right_child); 
+    tree->remove(twenty);
     tree->inorder_walk_down(tree->get_root());
-    tree->next_larger(twenty)->print_node(); 
     return 0;
 }
