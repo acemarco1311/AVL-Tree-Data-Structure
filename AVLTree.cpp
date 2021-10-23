@@ -347,9 +347,6 @@ void AVLTree::remove(AVLNode* deleted_node){
     //actual_deleted_node->set_left_child(nullptr); 
     //actual_deleted_node->set_right_child(nullptr);
     AVLNode* fix_height = actual_deleted_node;
-    actual_deleted_node = nullptr;
-    fix_height->update_height();
-    fix_height->print_node();
     while(fix_height->get_parent() != nullptr){
         this->rebalance(fix_height);
         fix_height = fix_height->get_parent();
