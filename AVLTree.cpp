@@ -334,12 +334,12 @@ void AVLTree::remove(AVLNode* deleted_node){
     else actual_deleted_node->get_parent()->set_right_child(actual_deleted_node_child);
     if(actual_deleted_node->get_key() != deleted_node->get_key()){
         deleted_node->set_key(actual_deleted_node->get_key());
-        if (actual_deleted_node->get_left_child() != nullptr) {
-            deleted_node->set_left_child(actual_deleted_node->get_left_child());
-        }
-        if (actual_deleted_node->get_right_child() != nullptr) {
-            deleted_node->set_right_child(actual_deleted_node->get_right_child()); 
-        }
+//         if (actual_deleted_node->get_left_child() != nullptr) {
+//             deleted_node->set_left_child(actual_deleted_node->get_left_child());
+//         }
+//         if (actual_deleted_node->get_right_child() != nullptr) {
+//             deleted_node->set_right_child(actual_deleted_node->get_right_child()); 
+//         }
     }
     
     //fix height 
